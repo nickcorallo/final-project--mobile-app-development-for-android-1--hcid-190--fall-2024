@@ -204,18 +204,60 @@ fun MatrixApp(onBack: () -> Unit) {
     }
 }
 
-fun createMatrix(size: Int): String {
-    if (size <= 0) return "Invalid matrix size"
+private fun createMatrix(size: Int): String {
+    if (size <= 0) {
+        return "Invalid matrix size"
+    }
 
+    val defaultMatrix = generateDefaultMatrix(size)
+    val numberedMatrix = generateNumberedMatrix(size)
+    val flippedMatrix = generateFlippedMatrix(size)
+
+    return "Default Matrix:\n$defaultMatrix\n" +
+            "Numbered Matrix:\n$numberedMatrix\n" +
+            "Flipped Matrix:\n$flippedMatrix"
+}
+
+private fun generateDefaultMatrix(size: Int): String {
     val builder = StringBuilder()
     for (row in 0 until size) {
         for (col in 0 until size) {
-            val value = if (row + col == size - 1) "RED_0" else "0"
+            //cant figure out coloring in this app, its not working
+            val value = if (row + col == size - 1) "()" else "0"
             builder.append(value).append(" ")
         }
-        builder.appendLine()
+        builder.append("\n")
     }
-    return builder.toString().trim()
+    return builder.toString()
+}
+
+private fun generateNumberedMatrix(size: Int): String {
+    val builder = StringBuilder()
+    var count = 1
+    for (row in 0 until size) {
+        for (col in 0 until size) {
+            val value = if (row + col == size - 1) "()_$count" else "$count"
+            builder.append(value).append(" ")
+            count++
+        }
+        builder.append("\n")
+    }
+    return builder.toString()
+}
+
+private fun generateFlippedMatrix(size: Int): String {
+    val builder = StringBuilder()
+    val maxNumber = size * size
+    var count = maxNumber
+    for (row in 0 until size) {
+        for (col in 0 until size) {
+            val value = if (row + col == size - 1) "()_$count" else "$count"
+            builder.append(value).append(" ")
+            count--
+        }
+        builder.append("\n")
+    }
+    return builder.toString()
 }
 enum class Screen {
     HOME, DIAMOND, MATRIX
